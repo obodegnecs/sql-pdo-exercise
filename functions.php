@@ -2,10 +2,7 @@
 
 function numberOfPages(): int
 {
-
-    global $pdo;
-
-    $stmt = $pdo->query('SELECT COUNT(name) as "count" FROM products;');
+    $stmt = dbConnect()->query('SELECT COUNT(name) as "count" FROM products;');
     $rows = $stmt->fetch();
     $pages = (int)$rows['count'] / 10;
 

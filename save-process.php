@@ -11,20 +11,21 @@ require 'functions.php';
 $pdo = dbConnect();
 
 if (!empty($_POST)) {
-    $product_form = new ProductForm();
-
-    if ($product_form->validate(
-        $_POST['productName'], $_POST['productCategory'],
+    $product_form = new ProductForm(
+        $_POST['productName'],
+        $_POST['productCategory'],
         $_POST['description']
-    )
-    ) {
+    );
+
+    if ($product_form->validate()) {
 
         $product = new Product(
-            $_POST['productName'], $_POST['productCategory'],
+            $_POST['productName'],
+            $_POST['productCategory'],
             $_POST['description']
         );
 
-        $product_repository = new ProductRepository();
+        $product_repository = new ProductRepository($pdo);
         $product_repository->save($product);
     } else {
         $_SESSION['error_msg'] = "Unsuccessful save!";

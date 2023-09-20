@@ -9,22 +9,34 @@ class ProductForm
     public string $description;
     public ?int $id;
 
-    public function validate(string $name, string $category,
-        string $description, ?int $id = null
-    ): bool {
+    /**
+     * @param string $name
+     * @param string $category
+     * @param string $description
+     * @param int|null $id
+     */
+    public function __construct(
+        string $name,
+        string $category,
+        string $description,
+        ?int $id = null
+    ) {
         $this->name = $name;
         $this->category = $category;
         $this->description = $description;
         $this->id = $id;
+    }
 
-        if (empty($this->name) || empty($this->category)) {
-            return false;
-        } elseif (strlen($this->name) > 64) {
-            return false;
-        } elseif (strlen($this->description) > 500) {
+    public function validate(): bool
+    {
+        if (empty($this->name) ||
+            empty($this->category) ||
+            strlen($this->name) > 64 ||
+            strlen($this->category) > 64 ||
+            strlen($this->description) > 500)
+        {
             return false;
         }
-
         return true;
     }
 

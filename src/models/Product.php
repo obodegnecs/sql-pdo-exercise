@@ -9,8 +9,11 @@ class Product
     public string $description;
     public ?int $id;
 
-    public function __construct(string $name, string $category,
-        string $description, ?int $id = null
+    public function __construct(
+        string $name,
+        string $category,
+        string $description,
+        ?int $id = null
     ) {
         $this->name = $name;
         $this->category = $category;

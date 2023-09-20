@@ -9,20 +9,23 @@ require __DIR__ . '/vendor/autoload.php';
 require 'functions.php';
 
 $pdo = dbConnect();
-$product_repository = new ProductRepository();
+$product_repository = new ProductRepository($pdo);
 
 if (!empty($_POST)) {
-    $product_form = new ProductForm();
+    $product_form = new ProductForm(
+        $_POST['productName'],
+        $_POST['productCategory'],
+        $_POST['description'],
+        $_POST['productId']
+    );
 
-    if ($product_form->validate(
-        $_POST['productName'], $_POST['productCategory'],
-        $_POST['description'], $_POST['productId']
-    )
-    ) {
+    if ($product_form->validate()) {
 
         $product = new Product(
-            $_POST['productName'], $_POST['productCategory'],
-            $_POST['description'], $_POST['productId']
+            $_POST['productName'],
+            $_POST['productCategory'],
+            $_POST['description'],
+            $_POST['productId']
         );
 
         $product_repository->update($product);
@@ -35,7 +38,8 @@ if (!empty($_POST)) {
     $row = $product_repository->get($_GET['productId']);
     if ($row = $row->fetch()) {
         $product = new Product(
-            $row['name'], $row['category'],
+            $row['name'],
+            $row['category'],
             $row['description'] ?? '', $row['id']
         );
     } else {

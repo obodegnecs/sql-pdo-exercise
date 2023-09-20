@@ -6,12 +6,12 @@ require __DIR__ . '/vendor/autoload.php';
 require 'functions.php';
 
 $pdo = dbConnect();
-$product_repository = new ProductRepository();
+$productRepository = new ProductRepository($pdo);
 
 $pages = numberOfPages();
-$current_page = $_GET['currentPage'] ?? 1;
+$currentPage = $_GET['currentPage'] ?? 1;
 
-$products = $product_repository->getAll($current_page);
+$products = $productRepository->getAll($currentPage);
 ?>
 <!doctype html>
 <html lang="en">
